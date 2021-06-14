@@ -135,6 +135,7 @@
 <meta name="if:Post Icons" content="0"/>
 
 <meta name="text:Post Margin" content="150"/>
+<meta name="text:Subtitle" content=""/>
 <meta name="text:Star 1 Text" content=""/>
 <meta name="text:Star 2 Text" content=""/>
 <meta name="text:Star 3 Text" content=""/>
@@ -300,6 +301,49 @@ pre {
 
 .tmblr-iframe-compact .tmblr-iframe--unified-controls {z-index: 999999999!important;}
 
+/*----- TOPBAR -----*/
+
+#topbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid {color:Borders}33;
+    background-color: {color:Sidebar Link Background}33;
+    height: 70px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+}
+
+#topbar #top-title a {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.5em;
+    color: {color:text} !important;
+    letter-spacing: 0.2em;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+
+}
+
+#topbar #top-title a:hover { color: {color:Accent} !important; }
+
+{block:ifSubtitle}
+#topbar #subtitle {
+    color: {color:Text}99;
+    display: block;
+    font-style: italic;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+}
+{/block:ifSubtitle}
+
 /*----- SIDEBAR -----*/
 
 #sidebar {
@@ -311,7 +355,7 @@ pre {
     {/block:ifNotRightSidebar}
     width: 300px;
     position: fixed;
-    top: {text:post margin}px;
+    top: 150px;
     text-align: center;
     z-index: 3;
 }
@@ -669,19 +713,25 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 
 {block:ifPostIcons}
 .question-icon, .answer-icon {
-    position: relative;
-    display: block;
     z-index: 1;
-    top: -1.3em;
-    right: -50%;
+    vertical-align: middle;
     border: 2px solid {color:Ask Background};
+    color: {color:Link};
+    margin: 0 auto;
     border-radius: 50%;
     width: 1.5em;
     height: 1.5em;
-    background-color: white;
-    padding: 2px;
-    margin: -1em;
-    margin-bottom: -0.5em;
+    {block:ifContainedPosts}
+        position: relative;
+        display: block;
+        top: -1.3em;
+        right: -50%;
+        background-color: {color:Contained Posts};
+        color: {color:Text};
+        margin: -1em;
+        margin-bottom: -0.5em;
+        padding: 2px;
+    {/block:ifContainedPosts}
 }
 {/block:ifPostIcons}
 
@@ -998,6 +1048,15 @@ ol.notes li.note img.avatar {
 <!----- HTML ----->
 
 <body>
+
+<!----- TOPBAR ----->
+
+<div id="topbar">
+    <div id="top-title"><a href="/">{Title}</a></div>
+    {block:ifSubtitle}
+    <span id="subtitle">{text:Subtitle}</span>
+    {/block:ifSubtitle}
+</div>
 
 <!-- main = main container -->
 
