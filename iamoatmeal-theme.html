@@ -237,6 +237,12 @@ $(document).ready(function(){
     transition: none;
 }
 
+[class^="ri-"], [class*=" ri-"] {
+    font-size: 20px;
+}
+
+* { box-sizing: border-box; }
+
 body {
     font-family: '{select:Font}', sans-serif;
     font-size: {select:Font Size};
@@ -267,7 +273,7 @@ a {
 }
 
 a:hover {
-    color: {color:Accent};
+    color: {color:Link Hover};
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -ms-transition: all 0.3s;
@@ -385,7 +391,11 @@ article {
 
 /*----- CAPTIONS -----*/
 
-.caption {margin-top: 2em; list-style-type: none;}
+.caption {
+    margin-top: 2em; 
+    list-style-type: none;
+    padding: 20px;
+}
 .text-caption:first-of-type {margin-top: 0;}
 
 .user-icon, .ask-icon {
@@ -394,6 +404,7 @@ article {
     width: 2em;
     height: 2em;
     margin-right: 1em;
+    border-radius: 50%;
 }
 
 .username {
@@ -468,16 +479,25 @@ img {
 
 /*----- QUOTE -----*/
 
-.quote {line-height: 160%; font-size: 1.25em;}
+.quote {
+    line-height: 160%;
+    font-size: 1.25em;
+    padding: 20px;
+}
 
 .quote p:first-of-type {margin-top: 0;}
 .quote p:last-of-type {margin-bottom: 0;}
 
-.source {margin-top: 1.5em;}
+.source {
+    margin-top: 1.5em;
+}
 
 /*----- CHAT -----*/
 
-.chat {padding: 0; margin: 0;}
+.chat {
+    padding: 0; 
+    margin: 0;
+}
 .chat li {list-style-type: none; margin-top: 1em;}
 .chat li:first-of-type {margin-top: 0;}
 .chatter {font-weight: bold;}
@@ -486,7 +506,10 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 
 /*----- ANSWER -----*/
 
-.ask-wrap {border-bottom: 1px solid {color:borders}; padding-bottom: 2em;}
+.ask-wrap {
+    border-bottom: 1px solid {color:borders};
+    padding: 20px;
+}
 
 .ask-wrap .asking {
     display: inline-block; 
@@ -551,14 +574,12 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 
 /*----- INFO -----*/
 
-.info {margin-top: 2em;}
+.info {margin-top: 2em; padding: 20px;}
 .info a {display: inline-block; vertical-align: middle;}
 
-.likeb {
+.likeb, .reblogb {
     position: relative;
     display: inline-block;
-    height: 1.6em;
-    margin-bottom: -1px;
 }
  
 .likeb .like_button iframe {
@@ -572,10 +593,11 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 }
 
 .like_button iframe {width: 100% !important; height: 100% !important;}
-.likeb .liked + .actual-button {color: red;}
-.likeb .liked + .actual-button:after {content: 'd';}
+.likeb .liked + .actual-button {color: #ed4a4a;}
 
 .info a, .tags a {margin-right: 0.75em;}
+
+.tags {padding: 20px;}
 
 a.pinned-post {font-weight: bold; color: {color:accent};}
 
@@ -695,14 +717,37 @@ ol.notes li.note img.avatar {
     {/block:Description}
     
     <nav>
-        {block:ifHomeLink}<a href="/">{text:Home Link}</a>{/block:ifHomeLink}
-        {block:AskEnabled}{block:ifAskLink}<a href="/ask">{text:Ask Link}</a>{/block:ifAskLink}{/block:AskEnabled}
-        {block:ifArchiveLink}<a href="/archive">{text:Archive Link}</a>{/block:ifArchiveLink}
-        {block:SubmissionsEnabled}{block:ifSubmitLink}<a href="/submit">{text:Submit Link}</a>{/block:ifSubmitLink}{/block:SubmissionsEnabled}
-        {block:ifLink1}<a href="{text:Link 1 URL}">{text:Link 1}</a>{/block:ifLink1}
-        {block:ifLink2}<a href="{text:Link 2 URL}">{text:Link 2}</a>{/block:ifLink2}
-        {block:ifLink3}<a href="{text:Link 3 URL}">{text:Link 3}</a>{/block:ifLink3}
-        {block:HasPages}{block:Pages}<a href="{URL}">{Label}</a>{/block:Pages}{/block:HasPages}
+        {block:ifHomeLink}
+        <a href="/"><i class="ri-home-4-line"></i></a>
+        {/block:ifHomeLink}
+        
+        {block:AskEnabled}{block:ifAskLink}
+        <a href="/ask"><i class="ri-questionnaire-line"></i></i></a>
+        {/block:ifAskLink}{/block:AskEnabled}
+        
+        {block:ifArchiveLink}
+        <a href="/archive"><i class="ri-calendar-event-fill"></i></a>
+        {/block:ifArchiveLink}
+        
+        {block:SubmissionsEnabled}{block:ifSubmitLink}
+        <a href="/submit"><i class="ri-upload-cloud-2-line"></i></a>
+        {/block:ifSubmitLink}{/block:SubmissionsEnabled}
+        
+        {block:ifLink1}
+        <a href="{text:Link 1 URL}">{text:Link 1}</a>
+        {/block:ifLink1}
+        
+        {block:ifLink2}
+        <a href="{text:Link 2 URL}">{text:Link 2}</a>
+        {/block:ifLink2}
+        
+        {block:ifLink3}
+        <a href="{text:Link 3 URL}">{text:Link 3}</a>
+        {/block:ifLink3}
+        
+        {block:HasPages}{block:Pages}
+        <a href="{URL}">{Label}</a>
+        {/block:Pages}{/block:HasPages}
     </nav>
 </aside>
 
@@ -943,7 +988,7 @@ ol.notes li.note img.avatar {
     
     <!-- like and reblog buttons -->
     
-        <a href="{ReblogURL}" target="_blank"><i class="ri-repeat-line"></i></a>
+        <a href="{ReblogURL}" class="reblogb" target="_blank"><i class="ri-repeat-line"></i></a>
         <a class="likeb" href="#">{LikeButton}<i class="actual-button ri-heart-3-fill"></i></a>
     
 </div>
