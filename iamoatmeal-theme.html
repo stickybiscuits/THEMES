@@ -27,10 +27,12 @@
     CREDITS:
         - base code by @seyche
         - masonry by desandro
+        - masonry tutorial by @suiomi
         - css photosets by @annasthms and @egg.design
         - npf photosets by @codematurgy
-        - feather icons by cole bemis
+        - remix icons by @xiaochunjimmy
         - tippy.js tooltips by @atomiks
+        - note count shortening by @shythemes
     
 --->
 
@@ -47,6 +49,9 @@
 <link href="https://cdn.jsdelivr.net/gh/boscoxvi/npfphotosets/npfphotosetstyle.css" rel="stylesheet" type="text/css">
 <link href="https://static.tumblr.com/0podkko/xIbplezmo/modified_photosets.css" rel="stylesheet">
 <script src="https://static.tumblr.com/0podkko/jfMplm3f8/modified_photosets.js"></script>
+
+<!--- Icons --->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
 
 <!----- FONTS ----->
@@ -209,11 +214,28 @@
 <meta name="text:Top Link 4 URL" content=""/>
 <meta name="text:Top Link 4" content=""/>
 
+<script>
+$(document).ready(function(){
+    $(function() {
+        $('body').removeClass('load-in');
+    });
+});
+</script>
+
 <!----- CSS ----->
 
 <style type="text/css">
 
 /*----- BASIC STYLING -----*/
+
+.load-in {
+    opacity: 0;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
 
 body {
     font-family: '{select:Font}', sans-serif;
@@ -226,6 +248,12 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    opacity: 1
+    -webkit-transition: 1s opacity;
+    -moz-transition: 1s opacity;
+    -ms-transition: 1s opacity;
+    -o-transition: 1s opacity;
+    transition: 1s opacity;;
 }
 
 a {
@@ -295,6 +323,7 @@ pre {
     top: {select:Post Margin};
     left: 100px;
     text-align: center;
+    background-color: {color:Posts};
 }
 
 {block:ifSidebarImage}
@@ -339,6 +368,7 @@ article {
     break-inside: avoid; 
     display:inline-block;
     {/block:ifGrid}
+    background-color: {color:Posts};
 }
 
 .masonry-load {
@@ -424,6 +454,10 @@ img {
 }
 
 [photoset-layout] { grid-gap: {select:Photoset Gutter}px; }
+
+.clearfix:before, .clearfix:after{content: ''; display: table;}
+.clearfix:after {clear: both;}
+.clearfix {zoom: 1;}
 
 /*----- PHOTOSET -----*/
 
@@ -567,9 +601,17 @@ ol.notes li.note img.avatar {
 
 /*---- PAGINATION -----*/
 
+#footer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #page-navigation {
     text-align: center;
-    width: 100%;
+    width: auto
 }
 #page-navigation a, .current-page {margin: 0 0.5em;}
 .current-page {font-weight: bold; color: {color:accent};}
@@ -633,7 +675,7 @@ ol.notes li.note img.avatar {
 
 <!----- HTML ----->
 
-<body>
+<body class="load-in">
 
 <!-- main = main container -->
 
@@ -642,9 +684,16 @@ ol.notes li.note img.avatar {
 <!----- SIDEBAR ----->
 
 <aside id="sidebar">
-    {block:ifSidebarImage}<img src="{image:Sidebar}" id="side-img" alt="Sidebar image"/></a>{/block:ifSidebarImage}
+    {block:ifSidebarImage}
+    <img src="{image:Sidebar}" id="side-img" alt="Sidebar image"/></a>
+    {/block:ifSidebarImage}
+    
     <div class="title"><a href="/">{Title}</a></div>
-    {block:Description}<div id="description">{Description}</div>{/block:Description}
+    
+    {block:Description}
+    <div id="description">{Description}</div>
+    {/block:Description}
+    
     <nav>
         {block:ifHomeLink}<a href="/">{text:Home Link}</a>{/block:ifHomeLink}
         {block:AskEnabled}{block:ifAskLink}<a href="/ask">{text:Ask Link}</a>{/block:ifAskLink}{/block:AskEnabled}
@@ -677,7 +726,7 @@ ol.notes li.note img.avatar {
 
 <!----- POSTS ----->
 
-{block:Posts}
+{block:Posts inlineMediaWidth="1280"}
 <article class="posts {block:ifGrid}grid-item masonry-load{/block:ifGrid}" id="{PostID}" post-type="{PostType}">
 
 {block:Text}
@@ -869,9 +918,16 @@ ol.notes li.note img.avatar {
 
 {block:Date}
 <div class="info">
-    {block:PinnedPostLabel}<a href="{Permalink}" class="pinned-post">{PinnedPostLabel}</a>{/block:PinnedPostLabel}
+
+    {block:PinnedPostLabel}
+    <a href="{Permalink}" class="pinned-post">{PinnedPostLabel}</a>
+    {/block:PinnedPostLabel}
+    
     <a href="{Permalink}">{Month} {DayOfMonth}, {Year}</a>
-    {block:NoteCount}<a href="{Permalink}">{NoteCountWithLabel}</a>{/block:NoteCount}
+    
+    {block:NoteCount}
+    <a href="{Permalink}" class="notecount">{NoteCountWithLabel}</a>
+    {/block:NoteCount}
         
     <!-- reblog info and content source on permalink pages -->
     
@@ -887,8 +943,8 @@ ol.notes li.note img.avatar {
     
     <!-- like and reblog buttons -->
     
-        <a href="{ReblogURL}" target="_blank">reblog</a>
-        <a class="likeb" href="#">{LikeButton}<span class="actual-button">like</span></a>
+        <a href="{ReblogURL}" target="_blank"><i class="ri-repeat-line"></i></a>
+        <a class="likeb" href="#">{LikeButton}<i class="actual-button ri-heart-3-fill"></i></a>
     
 </div>
 {/block:Date}
@@ -920,6 +976,7 @@ ol.notes li.note img.avatar {
 
 <!----- PAGINATION ----->
 
+<footer id="footer">
 {block:Pagination}
 <article id="page-navigation">
     {block:PreviousPage}<a href="{PreviousPage}">previous page</a>{/block:PreviousPage}
@@ -930,6 +987,7 @@ ol.notes li.note img.avatar {
     {block:NextPage}<a href="{NextPage}">next page</a>{/block:NextPage}
 </article>
 {/block:Pagination}
+</footer>
 
 <!-- end of main container -->
 
@@ -943,6 +1001,8 @@ ol.notes li.note img.avatar {
 
 $(document).ready(function() {
     
+    
+    // MASONRY
     var $grid = $('.grid');
         $grid.masonry({
             itemSelector: '.grid-item',
@@ -956,6 +1016,8 @@ $(document).ready(function() {
             $grid.find('article').removeClass('masonry-load');
     });
     
+    
+    // PHOTOSETS
     initPhotosets();
    
     npfPhotosets(".posts", {
@@ -971,6 +1033,16 @@ $(document).ready(function() {
        galleryIndicatorContent: "<img src='image_url'>",
        photosetMargins:"{select:Photoset Gutter}"
     });
+    
+    
+    // NOTECOUNT SHORTENING
+    $('article').find('.notecount').each(function(){
+       var n = $(this).html().split(' ')[0].replace(/,/g, '');
+       if (n > 999) {
+           n = Math.floor(n / 100) / 10;
+           $(this).text(n + 'K notes');
+       }
+   });
 })
 
 </script>
