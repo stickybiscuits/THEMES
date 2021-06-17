@@ -39,9 +39,11 @@
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 
-<!--- NPF Photosets Fix --->
-<link href="//dl.dropbox.com/s/bnoj86mka0bkplb/npf-override.css" rel="stylesheet">
-<script src="//dl.dropbox.com/s/vwrm94pcg4c9e71/npf-evenize.js"></script>
+<!--- Photosets --->
+<script src="https://cdn.jsdelivr.net/gh/boscoxvi/npfphotosets/npfphotosets.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/boscoxvi/npfphotosets/npfphotosetstyle.css" rel="stylesheet" type="text/css">
+<link href="https://static.tumblr.com/0podkko/xIbplezmo/modified_photosets.css" rel="stylesheet">
+<script src="https://static.tumblr.com/0podkko/jfMplm3f8/modified_photosets.js"></script>
 
 
 <!----- FONTS ----->
@@ -208,11 +210,6 @@
 
 <style type="text/css">
 
-:root {
-    --NPF-Image-Spacing:4px;
-    --NPF-Bottom-Gap-From-Captions:1em;
-}
-
 /*----- BASIC STYLING -----*/
 
 body {
@@ -341,6 +338,16 @@ article {
     {/block:ifGrid}
 }
 
+.masonry-load {
+    opacity: 0;
+    z-index: -1;
+    -webkit-transition: 0.5s opacity;
+    -moz-transition: 0.5s opacity;
+    -ms-transition: 0.5s opacity;
+    -o-transition: 0.5s opacity;
+    transition: 0.5s opacity;
+}
+
 .posts li, .posts blockquote, figure, video, iframe, .video, .video iframe, figure.tmblr-embed.tmblr-full, figure.tmblr-embed.tmblr-full iframe, .caption iframe {max-width: 100%;}
 
 /*----- CAPTIONS -----*/
@@ -399,7 +406,7 @@ img {
  
 .photo img {width: 100%;}
 .vignette, #vignette {opacity: 0;}
-.tmblr-lightbox, #tumblr_lightbox {background-color: rgba(130, 130, 130, 0.75) !important;}
+.tmblr-lightbox, #tumblr_lightbox {background-color: rgba(0, 0, 0, 0.5) !important;}
  
 .lightbox-image, #tumblr_lightbox img {
     box-shadow: none !important;
@@ -413,15 +420,13 @@ img {
     margin-top: 1em !important;
 }
 
+[photoset-layout] { grid-gap: {select:Photoset Gutter}px; }
+
 /*----- PHOTOSET -----*/
 
 .post-content div.npf_row, .post div.npf_row, body div.npf_row {
     margin-left: 0 !important;
     margin-right: 0 !important;
-}
-.post-content div.npf_col, .post div.npf_col, body div.npf_col {
-    display: inline-block !important;
-    width:50%;
 }
 
 /*----- QUOTE -----*/
@@ -654,7 +659,7 @@ ol.notes li.note img.avatar {
 <!----- POSTS ----->
 
 {block:Posts}
-<article class="posts {block:ifGrid}grid-item{/block:ifGrid}" id="{PostID}" post-type="{PostType}">
+<article class="posts {block:ifGrid}grid-item masonry-load{/block:ifGrid}" id="{PostID}" post-type="{PostType}">
 
 {block:Text}
 {block:Title}<h1 class="post-title"><a href="{Permalink}">{Title}</a></h1>{/block:Title}
@@ -703,7 +708,7 @@ ol.notes li.note img.avatar {
 
 {block:Photo}
 <div class="photo">
-    {LinkOpenTag}<a href="#" onclick="Tumblr.Lightbox.init([{ width: {PhotoWidth-HighRes}, height: {PhotoHeight-HighRes}, low_res: '{PhotoURL-500}', high_res: '{PhotoURL-HighRes}' }]); $('body').toggleClass('tumblr_lightbox_active'); return false"><img src="{PhotoURL-HighRes}" alt="{PhotoAlt}"></a>{LinkCloseTag}
+    {LinkOpenTag}<a href="#" onclick="Tumblr.Lightbox.init([{ width: {PhotoWidth-HighRes}, height: {PhotoHeight-HighRes}, low_res: '{PhotoURL-500}', high_res: '{PhotoURL-HighRes}' }]); $('body').toggleClass('tumblr_lightbox_active'); return false"><img src="{PhotoURL-HighRes}"></a>{LinkCloseTag}
 </div>
 {block:Caption}
     {block:NotReblog}
@@ -724,7 +729,7 @@ ol.notes li.note img.avatar {
 {/block:Photo}
 
 {block:Photoset}
-<div class="photo">{Photoset-700}</div>
+<div class="photoset-grid" photoset-layout="{PhotosetLayout}">{block:Photos}<div data-width="{PhotoWidth-HighRes}" data-height="{PhotoHeight-HighRes}" data-lowres="{PhotoURL-500}" data-highres="{PhotoURL-HighRes}" onclick="lightbox(this)"><img src="{PhotoURL-HighRes}" /></div>{/block:Photos}</div>
 {block:Caption}
     {block:NotReblog}
         <li class="caption">
@@ -915,21 +920,37 @@ ol.notes li.note img.avatar {
 
 <a href="https://seyche.tumblr.com" title="base code by seyche" id="credit">&.</a>
 
-<!--- MASONRY --->
 <script>
 
 $(document).ready(function() {
-    var $grid = $('.grid').masonry({
-        initLayout: true,
-        itemSelector: '.grid-item',
-        horizontalOrder: true,
-        fitWidth: false,
-        resize: false,
-        gutter: 50,
-        transitionDuration: '0.3s'
+    
+    var $grid = $('.grid');
+        $grid.masonry({
+            itemSelector: '.grid-item',
+            gutter: 80,
+            horizontalOrder: true,
+            initLayout: true,
+            transitionDuration: '0.3s'
+        });
+        $grid.imagesLoaded(function(){
+            $grid.masonry();
+            $grid.find('article').removeClass('masonry-load');
     });
-    $grid.imagesLoaded().progress( function() {
-        $grid.masonry('layout');
+    
+    initPhotosets();
+   
+    npfPhotosets(".posts", {
+       rowClass:"npf_row",
+       extraWrapperClass: "npf_col",
+       imageContainerClass:"tmblr-full",
+       generatedPhotosetContainerClass:"npf_photoset",
+       imageClass:"post_media_photo",
+       includeCommonPhotosets: false,
+       useTumblrLightbox: true,
+       insertGalleryIndicator: false,
+       galleryIndicatorClass: "npf_gallery_indicator",
+       galleryIndicatorContent: "<img src='image_url'>",
+       photosetMargins:"{select:Photoset Gutter}"
     });
 })
 
