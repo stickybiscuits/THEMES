@@ -118,7 +118,8 @@
 <!----- VARIABLES AND OPTIONS ----->
 
 <meta name="image:Favicon" content=""/>
-		
+
+<meta name="if:Hide Avatar" content="0"/>	
 <meta name="if:Show Header Image" content="0"/>
 <meta name="if:Rounded Corners" content="0"/>
 <meta name="if:Post Border" content="0"/>
@@ -126,6 +127,7 @@
 <meta name="if:Dark Tumblr Controls" content="0"/>
 <meta name="if:Full Background" content="0" />
 <meta name="if:Grid" content="0" />
+<meta name="if:Filled Icons" content="0" />
 
 <meta name="color:Background" content="#f6f6f6"/>
 <meta name="color:Posts" content="#ffffff"/>
@@ -252,7 +254,7 @@ $(document).ready(function(){
 }
 
 [class^="ri-"], [class*=" ri-"] {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 * { box-sizing: border-box; }
@@ -344,12 +346,48 @@ pre {
     left: 100px;
     text-align: center;
     background-color: {color:Posts};
-    padding: 20px;
+    {block:ifRoundedCorners}
+    border-radius: 4px;
+    overflow: hidden;
+    {/block:ifRoundedCorners}
 }
 
-{block:ifSidebarImage}
-#side-img {margin-bottom: 1.5em;}
-{/block:ifSidebarImage}
+#sidebar-header {
+    width: 100%;
+    height: 120px;
+    background-image: linear-gradient(to right, {color:Gradient 1}, {color:Gradient 2});
+    {block:ifShowHeaderImage}
+    background-image: url({HeaderImage}) ;
+    {/block:ifShowHeaderImage}
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#sidebar-img {
+    {block:ifHideAvatar}
+    display: none;
+    {/block:ifHideAvatar}
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+    background-color: black;
+    border: 5px solid {color:Posts};
+    background-image: url({PortraitURL-128});
+    background-position: center;
+    background-size: cover;
+    transform: translateY(-50%);
+    margin: 0 auto;
+}
+
+#sidebar-info { 
+    padding: 0px 20px 20px;
+    margin-top: -2em;
+    {block:ifHideAvatar}
+    padding-top: 20px;
+    margin-top: 0;
+    {/block:ifHideAvatar}
+}
 
 #description, nav {margin-top: 1.25em;}
 nav a {margin: auto 0.5em;}
@@ -394,6 +432,10 @@ article {
     {/block:IndexPage}
     {/block:ifGrid}
     background-color: {color:Posts};
+    {block:ifRoundedCorners}
+    border-radius: 4px;
+    overflow: hidden;
+    {/block:ifRoundedCorners}
 }
 
 .masonry-load {
@@ -411,11 +453,9 @@ article {
 /*----- CAPTIONS -----*/
 
 .caption {
-    margin-top: 2em; 
     list-style-type: none;
     padding: 20px;
 }
-.text-caption:first-of-type {margin-top: 0;}
 
 .user-icon, .ask-icon {
     display: inline-block;
@@ -594,7 +634,6 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 /*----- INFO -----*/
 
 .info {
-    margin-top: 2em;
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -741,6 +780,8 @@ ol.notes li.note img.avatar {
         left: 0;
     }
     
+    #sidebar-img { width: 7em; height: 7em;}
+    
     section {
         margin-top: 150px;
         margin-left: auto;
@@ -774,11 +815,12 @@ ol.notes li.note img.avatar {
 <!----- SIDEBAR ----->
 
 <aside id="sidebar">
-    {block:ifSidebarImage}
-    <img src="{image:Sidebar}" id="side-img" alt="Sidebar image"/></a>
-    {/block:ifSidebarImage}
     
-    <div class="title"><a href="/">{Title}</a></div>
+    <div id="sidebar-header"></div>
+    <div id="sidebar-img"></div>
+    
+    <div id="sidebar-info">
+        <div class="title"><a href="/">{Title}</a></div>
     
     {block:Description}
     <div id="description">{Description}</div>
@@ -819,6 +861,7 @@ ol.notes li.note img.avatar {
         <a href="{URL}">{Label}</a>
         {/block:Pages}{/block:HasPages}
     </nav>
+    </div>
 </aside>
 
 <!----- TAG AND DAY PAGES ----->
@@ -1118,6 +1161,17 @@ ol.notes li.note img.avatar {
 <script>
 
 $(document).ready(function() {
+    
+    {block:ifFilledIcons}
+    $('nav i').each(function() {
+        var text = $(this).attr('class');
+        console.log(text);
+        text = text.replace('line', 'fill');
+        console.log(text);
+        $(this).removeClass();
+        $(this).addClass(text);
+    });
+    {/block:ifFilledIcons}
     
     
     // MASONRY
