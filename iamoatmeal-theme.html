@@ -26,9 +26,10 @@
     
     CREDITS:
         - base code by @seyche
+        - tags on click by @seyche
         - masonry by desandro
         - masonry tutorial by @suiomi
-        - css photosets by @annasthms and @egg.design
+        - css photosets by @annasthms and egg.design
         - npf photosets by @codematurgy
         - remix icons by @xiaochunjimmy
         - tippy.js tooltips by @atomiks
@@ -116,10 +117,10 @@
 <meta name="if:Show Header Image" content="0"/>
 <meta name="if:Rounded Corners" content="0"/>
 <meta name="if:Post Border" content="0"/>
-<meta name="if:Footer" content="0"/>
+<meta name="if:Tags On Click" content="0"/>
 <meta name="if:Dark Tumblr Controls" content="0"/>
-<meta name="if:full background" content="" />
-<meta name="if:grid" content="" />
+<meta name="if:Full Background" content="0" />
+<meta name="if:Grid" content="0" />
 
 <meta name="color:Background" content="#f6f6f6"/>
 <meta name="color:Posts" content="#ffffff"/>
@@ -146,6 +147,7 @@
 <meta name="select:Post Width" content="540px" title="540px"/>
 <meta name="select:Post Width" content="600px" title="600px"/>
 
+<meta name="select:Post Margin" content="50px" title="50px"/>
 <meta name="select:Post Margin" content="100px" title="100px"/>
 <meta name="select:Post Margin" content="150px" title="150px"/>
 <meta name="select:Post Margin" content="200px" title="200px"/>
@@ -324,12 +326,13 @@ pre {
 /*----- SIDEBAR -----*/
 
 #sidebar {
-    width: 250px;
+    width: 300px;
     position: fixed;
     top: {select:Post Margin};
     left: 100px;
     text-align: center;
     background-color: {color:Posts};
+    padding: 20px;
 }
 
 {block:ifSidebarImage}
@@ -352,7 +355,9 @@ section {
     position: relative;
     margin-left: 400px;
     width: calc({select:Post Width} * 2);
-    max-width: 80vw;
+    {block:notIndexPage}
+    max-width: 50vw;
+    {/block:notIndexPage}
 }
 
 /* GRID */
@@ -371,8 +376,10 @@ article {
     position: relative;
     margin: {select:Post Margin} auto;
     {block:ifGrid}
+    {block:IndexPage}
     break-inside: avoid; 
     display:inline-block;
+    {/block:IndexPage}
     {/block:ifGrid}
     background-color: {color:Posts};
 }
@@ -577,9 +584,17 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 .info {margin-top: 2em; padding: 20px;}
 .info a {display: inline-block; vertical-align: middle;}
 
-.likeb, .reblogb {
+.likeb, .reblogb, .tagb {
     position: relative;
     display: inline-block;
+}
+
+.actual-button {
+    -webkit-transition: color 0.1s;
+    -moz-transition: color 0.1s;
+    -ms-transition: color 0.1s;
+    -o-transition: color 0.1s;
+    transition: color 0.1s;
 }
  
 .likeb .like_button iframe {
@@ -593,11 +608,43 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 }
 
 .like_button iframe {width: 100% !important; height: 100% !important;}
-.likeb .liked + .actual-button {color: #ed4a4a;}
+.likeb .liked + .actual-button {
+    color: #ed4a4a;
+    -webkit-transition: color 0.1s;
+    -moz-transition: color 0.1s;
+    -ms-transition: color 0.1s;
+    -o-transition: color 0.1s;
+    transition: color 0.1s;
+}
 
 .info a, .tags a {margin-right: 0.75em;}
 
-.tags {padding: 20px;}
+.tags {
+    padding: 20px;
+    {block:ifTagsOnClick}
+    display: none;
+    {/block:ifTagsOnClick}
+    font-size: 0.9em;
+}
+
+a.tagb { cursor: help; 
+    -webkit-transition: color 0.3s;
+    -moz-transition: color 0.3s;
+    -ms-transition: color 0.3s;
+    -o-transition: color 0.3s;
+    transition: color 0.3s;
+}
+
+a.tagb:hover {
+    color: {color:Accent};
+    -webkit-transition: color 0.3s;
+    -moz-transition: color 0.3s;
+    -ms-transition: color 0.3s;
+    -o-transition: color 0.3s;
+    transition: color 0.3s;
+}
+
+a.tagb.tag-clicked { color: {color:Accent}; }
 
 a.pinned-post {font-weight: bold; color: {color:accent};}
 
@@ -652,10 +699,10 @@ ol.notes li.note img.avatar {
 
 @media only screen and (min-width: 1251px) and (max-width: 1600px) {
     
-    #sidebar {
-        left: 50px;
-    }
+    #sidebar { left: 50px; }
+    section { width: 780px; }
     
+    {block:IndexPage}
     .grid-item {
         width: 350px;
     }
@@ -663,6 +710,7 @@ ol.notes li.note img.avatar {
     .grid {
         width: 780px;
     }
+    {/block:IndexPage}
 }
 
 @media only screen and (max-width: 1250px) {
@@ -679,13 +727,15 @@ ol.notes li.note img.avatar {
         margin-top: 150px;
         margin-left: auto;
         width: 100% !important;
+        max-width: 100%;
     }
 }
 
 /*--- for mobile devices ---*/
 
 @media only screen and (max-width: 720px) {
-    main, section {width: 80vw !important;}
+    main {width: 80vw !important;}
+    section, article {width: 100% !important;}
 }
 
 /*---- END OF MEDIA QUERIES -----*/
@@ -722,16 +772,16 @@ ol.notes li.note img.avatar {
         {/block:ifHomeLink}
         
         {block:AskEnabled}{block:ifAskLink}
-        <a href="/ask"><i class="ri-questionnaire-line"></i></i></a>
+        <a href="/ask"><i class="ri-mail-send-line"></i></i></a>
         {/block:ifAskLink}{/block:AskEnabled}
-        
-        {block:ifArchiveLink}
-        <a href="/archive"><i class="ri-calendar-event-fill"></i></a>
-        {/block:ifArchiveLink}
         
         {block:SubmissionsEnabled}{block:ifSubmitLink}
         <a href="/submit"><i class="ri-upload-cloud-2-line"></i></a>
         {/block:ifSubmitLink}{/block:SubmissionsEnabled}
+        
+        {block:ifArchiveLink}
+        <a href="/archive"><i class="ri-calendar-event-line"></i></a>
+        {/block:ifArchiveLink}
         
         {block:ifLink1}
         <a href="{text:Link 1 URL}">{text:Link 1}</a>
@@ -755,7 +805,7 @@ ol.notes li.note img.avatar {
 
 <!-- section = post container -->
 
-<section {block:ifGrid} class="grid" {/block:ifGrid}>
+<section {block:IndexPage}{block:ifGrid}class="grid"{/block:ifGrid}{/block:IndexPage}>
 
 {block:TagPage}
 <article>
@@ -772,7 +822,7 @@ ol.notes li.note img.avatar {
 <!----- POSTS ----->
 
 {block:Posts inlineMediaWidth="1280"}
-<article class="posts {block:ifGrid}grid-item masonry-load{/block:ifGrid}" id="{PostID}" post-type="{PostType}">
+<article class="posts {block:IndexPage}{block:ifGrid}grid-item masonry-load{/block:ifGrid}{/block:IndexPage}" id="{PostID}" post-type="{PostType}">
 
 {block:Text}
 {block:Title}<h1 class="post-title"><a href="{Permalink}">{Title}</a></h1>{/block:Title}
@@ -986,8 +1036,9 @@ ol.notes li.note img.avatar {
         
         {/block:PermalinkPage}
     
-    <!-- like and reblog buttons -->
+    <!-- tag, like and reblog buttons -->
     
+        <a class="tagb"></a>
         <a href="{ReblogURL}" class="reblogb" target="_blank"><i class="ri-repeat-line"></i></a>
         <a class="likeb" href="#">{LikeButton}<i class="actual-button ri-heart-3-fill"></i></a>
     
@@ -1088,6 +1139,23 @@ $(document).ready(function() {
            $(this).text(n + 'K notes');
        }
    });
+   
+   
+   // TAGS ON CLICK
+   {block:ifTagsOnClick}
+    $('.tags').hide();
+    $('.tagb').html('<i class="ri-eye-close-line"></i>')
+    $('.tagb').click(function() {
+        $(this).closest('article').find('.tags').slideToggle(300);
+        $(this).toggleClass('tag-clicked');
+        if($(this).hasClass('tag-clicked')) {
+            $(this).html('<i class="ri-eye-line"></i>')
+        } else {
+            $(this).html('<i class="ri-eye-close-line"></i>')
+        }
+        return false;
+    });
+    {/block:ifTagsOnClick}
 })
 
 </script>
