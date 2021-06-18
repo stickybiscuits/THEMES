@@ -54,6 +54,11 @@
 <!--- Icons --->
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
+<!-- Tippy.js Tooltips -->
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away-subtle.css"/>
+
 
 <!----- FONTS ----->
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -181,40 +186,27 @@
 <meta name="select:Font Size" content="13px" title="13px"/>
 <meta name="select:Font Size" content="14px" title="14px"/>
 <meta name="select:Font Size" content="15px" title="15px"/>
-<meta name="select:Font Size" content="16px" title="16px"/>
 
 <meta name="text:Home Link" content="home"/>
-<meta name="text:Home Icon" content="home"/>
+<meta name="text:Home Icon" content="home-4"/>
 <meta name="text:Ask Link" content="ask"/>
-<meta name="text:Ask Icon" content="message-circle"/>
+<meta name="text:Ask Icon" content="mail-send"/>
 <meta name="text:Archive Link" content="archive"/>
-<meta name="text:Archive Icon" content="archive"/>
+<meta name="text:Archive Icon" content="calendar-event"/>
 <meta name="text:Submit Link" content="submit"/>
-<meta name="text:Submit Icon" content="upload"/>
+<meta name="text:Submit Icon" content="upload-cloud-2"/>
 
-<meta name="text:Side Link 1 URL" content=""/>
-<meta name="text:Side Link 1" content=""/>
-<meta name="text:Side Link 1 Icon" content="feather"/>
+<meta name="text:Sidebar Link 1 URL" content="/"/>
+<meta name="text:Sidebar Link 1" content=""/>
+<meta name="text:Sidebar Link 1 Icon" content="leaf"/>
 
-<meta name="text:Side Link 2 URL" content=""/>
-<meta name="text:Side Link 2" content=""/>
-<meta name="text:Side Link 2 Icon" content="feather"/>
+<meta name="text:Sidebar Link 2 URL" content="/"/>
+<meta name="text:Sidebar Link 2" content=""/>
+<meta name="text:Sidebar Link 2 Icon" content="plant"/>
 
-<meta name="text:Side Link 3 URL" content=""/>
-<meta name="text:Side Link 3" content=""/>
-<meta name="text:Side Link 3 Icon" content="feather"/>
-
-<meta name="text:Top Link 1 URL" content=""/>
-<meta name="text:Top Link 1" content=""/>
-
-<meta name="text:Top Link 2 URL" content=""/>
-<meta name="text:Top Link 2" content=""/>
-
-<meta name="text:Top Link 3 URL" content=""/>
-<meta name="text:Top Link 3" content=""/>
-
-<meta name="text:Top Link 4 URL" content=""/>
-<meta name="text:Top Link 4" content=""/>
+<meta name="text:Sidebar Link 3 URL" content="/"/>
+<meta name="text:Sidebar Link 3" content=""/>
+<meta name="text:Sidebar Link 3 Icon" content="seedling"/>
 
 <script>
 $(document).ready(function(){
@@ -228,6 +220,26 @@ $(document).ready(function(){
 
 <style type="text/css">
 
+/*----- TIPPY THEME -----*/
+
+.tippy-box[data-theme~='classic-theme'] {
+  background-color: {color:Text}B3;
+  color: {color:Posts};
+  font-size: 0.9em;
+  text-align: center;
+  padding: 0.1em auto;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+}
+.tippy-box[data-theme~='credit-theme'] {
+  background-color: {color:Text}B3;
+  color: {color:Posts};
+  font-size: 0.8em;
+  text-align: center;
+  padding: 0.1em auto;
+  letter-spacing: 1px;
+}
+
 /*----- BASIC STYLING -----*/
 
 .load-in {
@@ -240,7 +252,7 @@ $(document).ready(function(){
 }
 
 [class^="ri-"], [class*=" ri-"] {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 * { box-sizing: border-box; }
@@ -581,7 +593,13 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 
 /*----- INFO -----*/
 
-.info {margin-top: 2em; padding: 20px;}
+.info {
+    margin-top: 2em;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .info a {display: inline-block; vertical-align: middle;}
 
 .likeb, .reblogb, .tagb {
@@ -621,9 +639,9 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
 
 .tags {
     padding: 20px;
-    {block:ifTagsOnClick}
+    {block:ifTagsOnClick}{block:IndexPage}
     display: none;
-    {/block:ifTagsOnClick}
+    {/block:IndexPage}{/block:ifTagsOnClick}
     font-size: 0.9em;
 }
 
@@ -654,7 +672,7 @@ a.pinned-post {font-weight: bold; color: {color:accent};}
 
 ol.notes {
     max-width: 100%;
-    padding: 0;
+    padding: 20px;
     margin: 2em 0 0 0;
 }
 
@@ -691,16 +709,16 @@ ol.notes li.note img.avatar {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    font-size: 15px;
+    font-size: 0.8em;
 }
 
 
 /*--- RESPONSIVE ---*/
 
-@media only screen and (min-width: 1251px) and (max-width: 1600px) {
+@media only screen and (min-width: 1251px) and (max-width: 1550px) {
     
     #sidebar { left: 50px; }
-    section { width: 780px; }
+    section { width: 780px; margin-left: 350px; }
     
     {block:IndexPage}
     .grid-item {
@@ -768,32 +786,34 @@ ol.notes li.note img.avatar {
     
     <nav>
         {block:ifHomeLink}
-        <a href="/"><i class="ri-home-4-line"></i></a>
+        <a href="/" data-tippy-content="{text:Home Link}">
+        <i class="ri-{text:Home Icon}-line"></i></a>
         {/block:ifHomeLink}
         
         {block:AskEnabled}{block:ifAskLink}
-        <a href="/ask"><i class="ri-mail-send-line"></i></i></a>
+        <a href="/ask" data-tippy-content="{text:Ask Link}"><i class="ri-{text:Ask Icon}-line"></i></i></a>
         {/block:ifAskLink}{/block:AskEnabled}
         
         {block:SubmissionsEnabled}{block:ifSubmitLink}
-        <a href="/submit"><i class="ri-upload-cloud-2-line"></i></a>
+        <a href="/submit" data-tippy-content="{text:Submit Link}"><i class="ri-{text:Submit Icon}-line"></i></a>
         {/block:ifSubmitLink}{/block:SubmissionsEnabled}
         
         {block:ifArchiveLink}
-        <a href="/archive"><i class="ri-calendar-event-line"></i></a>
+        <a href="/archive" data-tippy-content="{text:Archive Link}"><i class="ri-{text:Archive Icon}-line"></i></a>
         {/block:ifArchiveLink}
         
-        {block:ifLink1}
-        <a href="{text:Link 1 URL}">{text:Link 1}</a>
-        {/block:ifLink1}
+        {block:ifSidebarLink1}
+        <a href="{text:Sidebar Link 1 URL}" data-tippy-content="{text:Sidebar Link 1}"><i class="ri-{text:Sidebar Link 1 Icon}-line"></i></a>
+        {/block:ifSidebarLink1}
         
-        {block:ifLink2}
-        <a href="{text:Link 2 URL}">{text:Link 2}</a>
-        {/block:ifLink2}
+        {block:ifSidebarLink2}
+        <a href="{text:Sidebar Link 2 URL}" data-tippy-content="{text:Sidebar Link 2}"><i class="ri-{text:Sidebar Link 2 Icon}-line"></i></a>
+        {/block:ifSidebarLink2}
         
-        {block:ifLink3}
-        <a href="{text:Link 3 URL}">{text:Link 3}</a>
-        {/block:ifLink3}
+        
+        {block:ifSidebarLink3}
+        <a href="{text:Sidebar Link 3 URL}" data-tippy-content="{text:Sidebar Link 3}"><i class="ri-{text:Sidebar Link 3 Icon}-line"></i></a>
+        {/block:ifSidebarLink3}
         
         {block:HasPages}{block:Pages}
         <a href="{URL}">{Label}</a>
@@ -1038,9 +1058,11 @@ ol.notes li.note img.avatar {
     
     <!-- tag, like and reblog buttons -->
     
-        <a class="tagb"></a>
-        <a href="{ReblogURL}" class="reblogb" target="_blank"><i class="ri-repeat-line"></i></a>
-        <a class="likeb" href="#">{LikeButton}<i class="actual-button ri-heart-3-fill"></i></a>
+        <div class="tag-like-reblog">
+            <a href="#" class="tagb" data-tippy-content="show tags"></a>
+            <a href="{ReblogURL}" class="reblogb" data-tippy-content="reblog" target="_blank"><i class="ri-repeat-line"></i></a>
+            <a class="likeb" data-tippy-content="like" href="#">{LikeButton}<i class="actual-button ri-heart-3-fill"></i></a>
+        </div>
     
 </div>
 {/block:Date}
@@ -1091,7 +1113,7 @@ ol.notes li.note img.avatar {
 
 <!----- CREDIT: if you make significant modifications, feel free to replace with your own. if you use this as a theme without changes, leave in place. ----->
 
-<a href="https://seyche.tumblr.com" title="base code by seyche" id="credit">&.</a>
+<a href="https://stickybiscuits.tumblr.com" id="credit">s.</a>
 
 <script>
 
@@ -1142,7 +1164,8 @@ $(document).ready(function() {
    
    
    // TAGS ON CLICK
-   {block:ifTagsOnClick}
+    {block:ifTagsOnClick}
+    {block:IndexPage}
     $('.tags').hide();
     $('.tagb').html('<i class="ri-eye-close-line"></i>')
     $('.tagb').click(function() {
@@ -1155,7 +1178,29 @@ $(document).ready(function() {
         }
         return false;
     });
+    {/block:IndexPage}
     {/block:ifTagsOnClick}
+    
+    // TIPPY.JS
+    tippy('#credit', {
+      content: 'theme by stickybiscuits',
+      theme: 'credit-theme',
+      arrow: false,
+      placement: 'left',
+      animation: 'shift-away-subtle'
+    });
+    tippy('div.tag-like-reblog a', {
+      theme: 'classic-theme',
+      arrow: false,
+      placement: 'bottom',
+      animation: 'shift-away-subtle'
+    });
+    tippy('#sidebar nav a', {
+      theme: 'classic-theme',
+      arrow: false,
+      placement: 'bottom',
+      animation: 'shift-away-subtle'
+    });
 })
 
 </script>
