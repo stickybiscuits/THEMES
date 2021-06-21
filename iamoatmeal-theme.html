@@ -27,11 +27,11 @@
     CREDITS:
         - base code by @seyche
         - tags on click by @seyche
-        - masonry by desandro
+        - masonry by Desandro
         - masonry tutorial by @suiomi
         - css photosets by @annasthms and egg.design
         - npf photosets by @codematurgy
-        - remix icons by @xiaochunjimmy
+        - remix icons by Jimmy Cheung
         - tippy.js tooltips by @atomiks
         - note count shortening by @shythemes
     
@@ -122,7 +122,7 @@
 <meta name="if:Hide Avatar" content="0"/>	
 <meta name="if:Show Header Image" content="0"/>
 <meta name="if:Rounded Corners" content="0"/>
-<meta name="if:Post Border" content="0"/>
+<meta name="if:Post Header" content="0"/>
 <meta name="if:Tags On Click" content="0"/>
 <meta name="if:Dark Tumblr Controls" content="0"/>
 <meta name="if:Full Background" content="0" />
@@ -143,6 +143,14 @@
 <meta name="color:Tooltip Text" content="#115965"/>
 <meta name="color:Selection Text" content="#666666"/>
 <meta name="color:Selection" content="#eecabe"/>
+
+<meta name="select:Sidebar Position" content="right-sidebar" title="Right"/>
+<meta name="select:Sidebar Position" content="left-sidebar" title="Left"/>
+<meta name="select:Sidebar Position" content="header" title="Top"/>
+
+<meta name="select:Tags" content="visible-tags" title="Visible tags"/>
+<meta name="select:Tags" content="tags-on-click" title="Tags on click"/>
+<meta name="select:Tags" content="hide-tags" title="Hide tags"/>
 
 <meta name="select:Border Width" content="1px" title="1px"/>
 <meta name="select:Border Width" content="2px" title="2px"/>
@@ -315,6 +323,8 @@ h3 {font-size: 1.25em;}
 h4 {font-size: 1.1em;}
 h5 {font-size: 1em;}
 
+.title a:hover { color:{color:Accent} !important; }
+
 small {font-size: 0.9em;}
 big {font-size: 1.1em;}
 
@@ -340,10 +350,7 @@ pre {
 /*----- SIDEBAR -----*/
 
 #sidebar {
-    width: 300px;
-    position: fixed;
     top: {select:Post Margin};
-    left: 100px;
     text-align: center;
     background-color: {color:Posts};
     {block:ifRoundedCorners}
@@ -352,10 +359,30 @@ pre {
     {/block:ifRoundedCorners}
 }
 
+aside.right-sidebar {
+    width: 300px;
+    position: fixed;
+    right: 100px;
+}
+aside.left-sidebar {
+    width: 300px;
+    position: fixed;
+    left: 100px;
+}
+aside.header {
+    position: relative;
+    top: 0 !important;
+    width: {select:Post Width};
+    {block:ifGrid}
+    width: calc({select:Post Width} * 2 + 100px);
+    {/block:ifGrid}
+    margin: {select:Post Margin} auto;
+}
+
 #sidebar-header {
     width: 100%;
     height: 120px;
-    background-image: linear-gradient(to right, {color:Gradient 1}, {color:Gradient 2});
+    background-image: linear-gradient(to bottom left, {color:Gradient 1}, {color:Gradient 2});
     {block:ifShowHeaderImage}
     background-image: url({HeaderImage}) ;
     {/block:ifShowHeaderImage}
@@ -403,12 +430,15 @@ main {
 
 section {
     position: relative;
-    margin-left: 400px;
     width: calc({select:Post Width} * 2);
     {block:notIndexPage}
     max-width: 50vw;
     {/block:notIndexPage}
 }
+
+section.left-sidebar { margin-left: 400px; margin-right: auto; }
+section.right-sidebar { margin-right: 400px; margin-left: auto; }
+section.header { margin: {select:Post Margin} auto; }
 
 /* GRID */
 {block:IndexPage}
@@ -416,8 +446,14 @@ section {
 .grid { width: calc({select:Post Width} * 2 + 100px); }
 .grid-item {
     width: {select:Post Width};
-    margin-bottom: {select:Post Margin};
+    margin: {select:Post Margin} auto;
 }
+
+{block:TagPage}
+.grid .grid-item:nth-of-type(2), .grid .grid-item:nth-of-type(3) {
+    margin-top: calc({select:Post Margin} * 2 + 50px);
+}
+{/block:TagPage}
 {/block:ifGrid}
 {/block:IndexPage}
 
@@ -438,6 +474,16 @@ article {
     {/block:ifRoundedCorners}
 }
 
+.tag-day {
+    width: {select:Post Width};
+    {block:ifGrid}
+    width: 100%;
+    {/block:ifGrid}
+    height: 2em;
+    text-align: center;
+}
+.tag-day.left-sidebar, .tag-day.right-sidebar, .tag-day.header { margin: {select:Post Margin} auto; }
+
 .masonry-load {
     opacity: 0;
     z-index: -1;
@@ -452,10 +498,61 @@ article {
 
 /*----- CAPTIONS -----*/
 
+{block:ifPostHeader}
+.post-header {
+    display: flex;
+    padding: 8px 10px;
+    justify-content: space-between;
+    align-items: center;
+    height: 3em;
+    background-image: linear-gradient(to right, {color:Gradient 1}, {color:Gradient 2});
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: {select:Photoset Gutter}px;
+}
+
+.post-header .poster-info {
+    display: flex;
+    align-items: center;
+}
+
+.post-header .poster-info .username { color: {color:Posts}; }
+.post-header .poster-info .username:hover { color: {color:Link Hover}; }
+
+.post-header .poster-info img.user-icon {
+    width: 2.2em;
+    height: 2.2em;
+    border: 2px solid {color:Posts};
+    margin-right: 12px;
+}
+
+.post-header .post-icon i {
+    color: {color:Posts};
+    font-size: 1.3em;
+    vertical-align: middle;
+    cursor: help;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.post-header .post-icon i:hover { 
+    color: {color:Link Hover};
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+{/block:ifPostHeader}
+
 .caption {
     list-style-type: none;
     padding: 20px;
 }
+
+.caption:not(:last-of-type) { border-bottom: 1px solid {color:Borders}; }
 
 .user-icon, .ask-icon {
     display: inline-block;
@@ -645,14 +742,6 @@ p.npf_chat, p.npf_chat b {font-family: inherit;}
     position: relative;
     display: inline-block;
 }
-
-.actual-button {
-    -webkit-transition: color 0.1s;
-    -moz-transition: color 0.1s;
-    -ms-transition: color 0.1s;
-    -o-transition: color 0.1s;
-    transition: color 0.1s;
-}
  
 .likeb .like_button iframe {
     position: absolute;
@@ -693,7 +782,7 @@ a.tagb { cursor: help;
 }
 
 a.tagb:hover {
-    color: {color:Accent};
+    color: {color:Link Hover};
     -webkit-transition: color 0.3s;
     -moz-transition: color 0.3s;
     -ms-transition: color 0.3s;
@@ -701,7 +790,7 @@ a.tagb:hover {
     transition: color 0.3s;
 }
 
-a.tagb.tag-clicked { color: {color:Accent}; }
+a.tagb.tag-clicked { color: {color:Link Hover}; }
 
 a.pinned-post {font-weight: bold; color: {color:accent};}
 
@@ -756,17 +845,19 @@ ol.notes li.note img.avatar {
 
 @media only screen and (min-width: 1251px) and (max-width: 1550px) {
     
-    #sidebar { left: 50px; }
+    aside.right-sidebar { right: 50px; }
+    aside.left-sidebar { right: 50px; }
+    aside.header { width: {select:Post Width}; }
+    
     section { width: 780px; margin-left: 350px; }
     
     {block:IndexPage}
-    .grid-item {
-        width: 350px;
-    }
-    
-    .grid {
-        width: 780px;
-    }
+    .grid-item { width: 350px; }
+    .grid { width: 780px; }
+    {block:ifGrid}
+    aside.header { width: 780px; }
+    .tag-day.header { width: 780px; }
+    {/block:ifGrid}
     {/block:IndexPage}
 }
 
@@ -788,6 +879,8 @@ ol.notes li.note img.avatar {
         width: 100% !important;
         max-width: 100%;
     }
+    
+    .tag-day{ width: 100%; }
 }
 
 /*--- for mobile devices ---*/
@@ -814,7 +907,7 @@ ol.notes li.note img.avatar {
 
 <!----- SIDEBAR ----->
 
-<aside id="sidebar">
+<aside id="sidebar" class="{select:Sidebar Position}">
     
     <div id="sidebar-header"></div>
     <div id="sidebar-img"></div>
@@ -864,20 +957,19 @@ ol.notes li.note img.avatar {
     </div>
 </aside>
 
-<!----- TAG AND DAY PAGES ----->
-
 <!-- section = post container -->
 
-<section {block:IndexPage}{block:ifGrid}class="grid"{/block:ifGrid}{/block:IndexPage}>
+<section class="{block:IndexPage}{block:ifGrid}grid{/block:ifGrid}{/block:IndexPage} {select:Sidebar Position}">
 
+<!----- TAG AND DAY PAGES ----->
 {block:TagPage}
-<article>
+<article class="tag-day {select:Sidebar Position}">
     Viewing posts filed under #{Tag}
 </article>
 {/block:TagPage}
 
 {block:DayPage}
-<article>
+<article class="tag-day {select:Sidebar Position}">
     Viewing posts made on {Month} {DayOfMonth}, {Year}
 </article>
 {/block:DayPage}
@@ -886,6 +978,42 @@ ol.notes li.note img.avatar {
 
 {block:Posts inlineMediaWidth="1280"}
 <article class="posts {block:IndexPage}{block:ifGrid}grid-item masonry-load{/block:ifGrid}{/block:IndexPage}" id="{PostID}" post-type="{PostType}">
+
+<!--- TOP HEADER --->
+{block:ifPostHeader}
+{block:Date}
+<div class="post-header">
+    <div class="poster-info">
+        {block:RebloggedFrom}
+        <a href="{ReblogRootURL}">
+            <img src="{ReblogRootPortraitURL-64}" data-tippy-content="'{ReblogRootTitle}'" class="user-icon"/>
+        </a>
+        <a href="{ReblogRootURL}" class="username">{ReblogRootName}</a>
+        {/block:RebloggedFrom}
+        
+        {block:NotReblog}
+        <a href="{Permalink}">
+        <img src="{PortraitURL-64}" data-tippy-content="original post" class="user-icon"/>
+        </a>
+        <a href="{Permalink}" class="username">{Name}</a>
+        {/block:NotReblog}
+    </div>
+    
+    <div class="post-icon">
+        {block:Text}<i class="ri-ball-pen-line" aria-hidden="true" data-tippy-content="text post"></i>{/block:Text}
+        {block:Link}<i class="ri-external-link-line" aria-hidden="true" data-tippy-content="link post"></i>{/block:Link}
+        {block:Photo}<i class="ri-image-2-line" aria-hidden="true" data-tippy-content="photo post"></i>{/block:Photo}
+        {block:Photoset}<i class="ri-image-add-line" aria-hidden="true" data-tippy-content="photoset post"></i>{/block:Photoset}
+        {block:Panorama}<i class="ri-landscape-line" aria-hidden="true" data-tippy-content="panorama post"></i>{/block:Panorama}
+        {block:Video}<i class="ri-tv-line" aria-hidden="true" data-tippy-content="video post"></i>{/block:Video}
+        {block:Quote}<i class="ri-double-quotes-l" aria-hidden="true" data-tippy-content="quote post"></i>{/block:Quote}
+        {block:Chat}<i class="ri-question-answer-line" aria-hidden="true" data-tippy-content="chat post"></i>{/block:Chat}
+        {block:Answer}<i class="ri-mail-open-line" aria-hidden="true" data-tippy-content="answer post"></i>{/block:Answer}
+        {block:Audio}<i class="ri-radio-2-line" aria-hidden="true" data-tippy-content="chat post"></i>{/block:Audio}
+    </div>
+</div>
+{/block:Date}
+{/block:ifPostHeader}
 
 {block:Text}
 {block:Title}<h1 class="post-title"><a href="{Permalink}">{Title}</a></h1>{/block:Title}
@@ -897,8 +1025,10 @@ ol.notes li.note img.avatar {
 {block:RebloggedFrom}
     {block:Reblogs}
         <li class="caption text-caption">
+        {block:IsNotOriginalEntry}
             <img src="{PortraitURL-64}" class="user-icon">
             <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+        {/block:IsNotOriginalEntry}
             {Body}
         </li>
     {/block:Reblogs}
@@ -924,8 +1054,10 @@ ol.notes li.note img.avatar {
 {block:RebloggedFrom}
     {block:Reblogs}
         <li class="caption">
+        {block:IsNotOriginalEntry}
             <img src="{PortraitURL-64}" class="user-icon">
             <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+        {/block:IsNotOriginalEntry}
             {Body}
         </li>
     {/block:Reblogs}
@@ -945,8 +1077,10 @@ ol.notes li.note img.avatar {
     {block:RebloggedFrom}
         {block:Reblogs}
             <li class="caption">
+            {block:IsNotOriginalEntry}
                 <img src="{PortraitURL-64}" class="user-icon">
                 <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+            {/block:IsNotOriginalEntry}
                 {Body}
             </li>
         {/block:Reblogs}
@@ -965,8 +1099,10 @@ ol.notes li.note img.avatar {
     {block:RebloggedFrom}
         {block:Reblogs}
             <li class="caption">
+            {block:IsNotOriginalEntry}
                 <img src="{PortraitURL-64}" class="user-icon">
                 <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+            {/block:IsNotOriginalEntry}
                 {Body}
             </li>
         {/block:Reblogs}
@@ -985,8 +1121,10 @@ ol.notes li.note img.avatar {
     {block:RebloggedFrom}
         {block:Reblogs}
             <li class="caption">
+            {block:IsNotOriginalEntry}
                 <img src="{PortraitURL-64}" class="user-icon">
                 <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+            {/block:IsNotOriginalEntry}
                 {Body}
             </li>
         {/block:Reblogs}
@@ -1030,8 +1168,10 @@ ol.notes li.note img.avatar {
 {block:RebloggedFrom}
     {block:Reblogs}
         <li class="caption">
+        {block:IsNotOriginalEntry}
             <img src="{PortraitURL-64}" class="user-icon">
             <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+        {/block:IsNotOriginalEntry}
             {Body}
         </li>
     {/block:Reblogs}
@@ -1063,8 +1203,10 @@ ol.notes li.note img.avatar {
     {block:RebloggedFrom}
         {block:Reblogs}
             <li class="caption">
+            {block:IsNotOriginalEntry}
                 <img src="{PortraitURL-64}" class="user-icon">
                 <div class="username {block:IsDeactivated}deactive{/block:IsDeactivated}"><a href="{Permalink}">{Username}</a></div>
+            {/block:IsNotOriginalEntry}
                 {Body}
             </li>
         {/block:Reblogs}
@@ -1250,6 +1392,12 @@ $(document).ready(function() {
       animation: 'shift-away-subtle'
     });
     tippy('#sidebar nav a', {
+      theme: 'classic-theme',
+      arrow: false,
+      placement: 'bottom',
+      animation: 'shift-away-subtle'
+    });
+    tippy('div.post-icon i, div.poster-info a img', {
       theme: 'classic-theme',
       arrow: false,
       placement: 'bottom',
