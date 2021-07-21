@@ -129,6 +129,7 @@
 <meta name="select:Font Size" content="16px" title="16px"/>
 
 <meta name="if:Right Sidebar" content="0"/>
+<meta name="if:Topbar" content="0"/>
 <meta name="if:Contained Posts" content="0"/>
 <meta name="if:Tags on Click" content="0"/>
 <meta name="if:Stars" content="0"/>
@@ -995,7 +996,7 @@ ol.notes li.note img.avatar {
 
 /*---- RESPONSIVENESS -----*/
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1400px) {
     body {box-sizing: border-box; padding: 0; overflow-x: hidden;}
     #sidebar {
         {block:ifRightSidebar}
@@ -1050,13 +1051,14 @@ ol.notes li.note img.avatar {
 <body>
 
 <!----- TOPBAR ----->
-
+{block:ifTopbar}
 <div id="topbar">
     <div id="top-title"><a href="/">{Title}</a></div>
     {block:ifSubtitle}
     <span id="subtitle">{text:Subtitle}</span>
     {/block:ifSubtitle}
 </div>
+{/block:ifTopbar}
 
 <!-- main = main container -->
 
