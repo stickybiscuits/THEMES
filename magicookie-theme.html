@@ -34,8 +34,14 @@
 <script src="https://unpkg.com/feather-icons"></script>
 
 <!-- NPF Images Readjustment by @glenthemes -->
-<link href="//dl.dropbox.com/s/bnoj86mka0bkplb/npf-override.css" rel="stylesheet">
-<script src="//dl.dropbox.com/s/vwrm94pcg4c9e71/npf-evenize.js"></script>
+<script src="//npf-images-v3.github.io/script.js"></script>
+<link rel="stylesheet" href="//npf-images-v3.github.io/recon.css">
+<style tmblr-npf>
+:root {
+    --NPF-Caption-Spacing:1em;
+    --NPF-Image-Spacing:4px;
+}
+</style>
 
 <!-- Tippy Tooltips by @atomiks -->
 <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -209,12 +215,12 @@
 
 ::-moz-selection {
     color: {color:Selection Text};
-    background-color: {color:Selection Background};
+    background-color: {color:Selection Background}A6;
 }
 
 ::selection {
     color: {color:Selection Text};
-    background-color: {color:Selection Background};
+    background-color: {color:Selection Background}A6;
 }
 
 ::-webkit-scrollbar {
@@ -303,14 +309,14 @@ pre {
 .tmblr-iframe-compact .tmblr-iframe--unified-controls {z-index: 999999999!important;}
 
 /*----- TOPBAR -----*/
-
+{block:ifTopbar}
 #topbar {
     position: fixed;
     top: 0;
     width: 100%;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid {color:Borders}33;
-    background-color: {color:Sidebar Link Background}40;
+    background-color: {color:Sidebar Link Background}33;
     height: 70px;
     z-index: 1000;
     display: flex;
@@ -344,6 +350,7 @@ pre {
     letter-spacing: 0.1em;
 }
 {/block:ifSubtitle}
+{/block:ifTopbar}
 
 /*----- SIDEBAR -----*/
 
@@ -356,7 +363,7 @@ pre {
     {/block:ifNotRightSidebar}
     width: 300px;
     position: fixed;
-    top: 150px;
+    top: {text:Post Margin}px;
     text-align: center;
     z-index: 3;
 }
@@ -426,10 +433,10 @@ pre {
 
 #star-1, #star-2, #star-3 {
     position: absolute;
-    width: 1.8em;
-    height: 1.8em;
-    color: {color:Accent};
-    fill: {color:Accent};
+    width: 2em;
+    height: 2em;
+    color: {color:Accent}00;
+    fill: {color:Accent}8E;
     transition: all 0.3s;
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
@@ -996,7 +1003,7 @@ ol.notes li.note img.avatar {
 
 /*---- RESPONSIVENESS -----*/
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1300px) {
     body {box-sizing: border-box; padding: 0; overflow-x: hidden;}
     #sidebar {
         {block:ifRightSidebar}
@@ -1051,6 +1058,7 @@ ol.notes li.note img.avatar {
 <body>
 
 <!----- TOPBAR ----->
+
 {block:ifTopbar}
 <div id="topbar">
     <div id="top-title"><a href="/">{Title}</a></div>

@@ -9,7 +9,7 @@
     - Sliding Tags by @seyche
     - Lightboxes by @shythemes
     - Pixel Union Photosets and modified tutorial by @shythemes
-    - NPF Photoset Fix by @glenthemes
+    - NPF Photoset Fix v3 by @glenthemes
     - NPF Photosets Plugin by @codematurgy
     - tippy.js Tooltips bu @atomiks
 
@@ -42,8 +42,14 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <!-- npf fix -->
-<link href="//dl.dropbox.com/s/bnoj86mka0bkplb/npf-override.css" rel="stylesheet">
-<script src="//dl.dropbox.com/s/vwrm94pcg4c9e71/npf-evenize.js"></script>
+<script src="//npf-images-v3.github.io/script.js"></script>
+<link rel="stylesheet" href="//npf-images-v3.github.io/recon.css">
+<style tmblr-npf>
+:root {
+    --NPF-Caption-Spacing:1em;
+    --NPF-Image-Spacing:4px;
+}
+</style>
 
 <!-- pxu photosets -->
 <link href="https://static.tumblr.com/qudkd6d/OcDnl99gb/style.css" rel="stylesheet" type="text/css"/>
@@ -983,19 +989,19 @@ ol.notes li.note img.avatar {
         </a>
         
         {block:ifLink1Label}
-        <a class="{select:Side Link Animation}" href="{Link 1 URL}" data-tippy-content="{text:Link 1 Label}">
+        <a class="{select:Side Link Animation}" href="{text:Link 1 URL}" data-tippy-content="{text:Link 1 Label}">
             <i class="feather-icon" data-feather="{text:Link 1 Icon}"></i>
         </a>
         {/block:ifLink1Label}
         
         {block:ifLink2Label}
-        <a class="{select:Side Link Animation}" href="{Link 2 URL}" data-tippy-content="{text:Link 2 Label}">
+        <a class="{select:Side Link Animation}" href="{text:Link 2 URL}" data-tippy-content="{text:Link 2 Label}">
             <i class="feather-icon" data-feather="{text:Link 2 Icon}"></i>
         </a>
         {/block:ifLink2Label}
         
         {block:ifLink3Label}
-        <a class="{select:Side Link Animation}" href="{Link 3 URL}" data-tippy-content="{text:Link 3 Label}">
+        <a class="{select:Side Link Animation}" href="{text:Link 3 URL}" data-tippy-content="{text:Link 3 Label}">
             <i class="feather-icon" data-feather="{text:Link 3 Icon}"></i>
         </a>
         {/block:ifLink3Label}

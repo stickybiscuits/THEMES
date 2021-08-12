@@ -18,6 +18,7 @@
             - base code by @seyche
             - feather icons by @colebemis
             - tippy.js tooltips by @atomiks
+            - npf photoset fix v3 by @glenthemes
 	--->
 
 <!----- FONTS ----->
@@ -80,8 +81,14 @@
 <script src="https://unpkg.com/feather-icons@4.28.0/dist/feather-sprite.svg"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://static.tumblr.com/0podkko/qWqq8va08/photosets.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/boscoxvi/npfphotosets/npfphotosets.js"></script>
-<link href="https://cdn.jsdelivr.net/gh/boscoxvi/npfphotosets/npfphotosetstyle.css" rel="stylesheet" type="text/css">
+<script src="//npf-images-v3.github.io/script.js"></script>
+<link rel="stylesheet" href="//npf-images-v3.github.io/recon.css">
+<style tmblr-npf>
+:root {
+    --NPF-Caption-Spacing:1em;
+    --NPF-Image-Spacing:4px;
+}
+</style>
 <link href="https://static.tumblr.com/qudkd6d/OcDnl99gb/style.css" rel="stylesheet" type="text/css"/>
 <script src="https://static.tumblr.com/yxfeliq/hHwojmt8m/bctphotoset.min.js"></script>
 
@@ -639,6 +646,7 @@ ol li {max-width: 100%;}
 main {
     position: relative;
     width: 100%;
+    min-height: 100%;
     margin: auto;
     display: flex;
     justify-content: space-around;
@@ -766,7 +774,23 @@ p.npf_chat b {font-family: inherit;}
 
 
 /*----- ANSWER -----*/
-.ask-wrap {border-bottom: 1px solid {color:borders}; padding-bottom: 2em;}
+.ask-wrap {
+    border: 1px solid {color:borders};
+    padding: 2em;
+    position: relative;
+}
+
+.ask-feather {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: {color:borders};
+    fill: {color:posts};
+}
+
 .ask-wrap .askicon {
     width: 2em;
     height: 2em;
@@ -776,9 +800,9 @@ p.npf_chat b {font-family: inherit;}
 }
 
 .ask-wrap .asking {
-display: inline-block; 
-margin-left: 1em;
-font-weight: bold;
+    display: inline-block; 
+    margin-left: 1em;
+    font-weight: bold;
 }
 
 .question {margin-top: 1em;}
@@ -861,7 +885,6 @@ a.pinned-post {font-weight: bold; color: {color:accent 1};}
 
 
 /*---- POST NOTES -----*/
-.notes {margin: {select:post margin} 0;}
 ol.notes {
     max-width: 100%;
     padding: 0;
@@ -875,6 +898,23 @@ ol.notes li.note img.avatar {
     display: inline-block;
     width: 1.25em;
     height: 1.25em;
+}
+
+li.more_notes_link_container {
+    margin-top: 1.5em;
+}
+
+a.more_notes_link {
+    background-color: {color:Link};
+    color: {color:Background};
+    padding: 0.5em 0.7em;
+    {block:ifRoundedCorners}
+    border-radius: 10px;
+    {/block:ifRoundedCorners}
+}
+a.more_notes_link:hover {
+    background-color: {color:Link Hover};
+    color: {color:Link};
 }
 
 
@@ -1309,6 +1349,7 @@ ol.notes li.note img.avatar {
             {/block:Chat}
             {block:Answer}
             <div class="ask-wrap">
+                <i data-feather="mail" class="ask-feather"></i>
                 <img src="{AskerPortraitURL-64}" class="askicon">
                 <div class="asking">{Asker} asked</div>
                 <div class="question">{Question}</div>

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="alternate" type="application/rss+xml" href="{RSS}" />
+<link rel="shortcut icon" href="{Favicon}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<title>{Name}: Page Name</title>
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.gstatic.com">	
+<!-- Source Serif Pro -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Josefin Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Cabin -->
+<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Noto Serif -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Rubik -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Ubuntu -->
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- PT Sans -->
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Roboto Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- PT Serif -->
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Source Sans Pro -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Balsamiq Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">	
+<!-- Merriweather -->
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Playfair Display -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- PT Serif -->
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Noto Serif -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Literata -->
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+/*--- VARIABLES ---*/
+:root {
+    --sidebar-background: #eeeeee;
+    --tab-background: #ffffff;
+    --content-background: #f8f8f8;
+    --character-card-background: #FFFFFF;
+    --text: #333333;
+    --links: #8d8d8d;
+    --links-hover: #eeeeee;
+    --title: #161616;
+    --subtitle: #eeeeee;
+    --character-subtitle: #8d8d8d;
+    --tab-text: #333333;
+    --accent-text: #333333;
+    --accent: #8d8d8d;
+    --active-tab: #8d8d8d;
+    --hover-tab: #eeeeee;
+    --borders: #8d8d8d;
+    --page-font: 'PT Sans', sans-serif;
+    --title-font: 'PT Serif', serif;
+    --font-size: 15px;
+}
+
+/*--- GENERAL STYLING ---*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar{
+width: 5px;
+height: 4px;
+cursor: pointer;
+}
+::-webkit-scrollbar-thumb{
+background: var(--accent);
+border-radius: 5px;
+}
+::-webkit-scrollbar-track{
+background: var(--borders);
+border-radius: 0px;
+}
+
+body.loading { opacity: 0; }
+body {
+    opacity: 1;
+    background-color: var(--background);
+    transition: opacity 1s linear;
+    font-family: var(--page-font);
+    font-size: var(--font-size);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 160%;
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: var(--links);
+    font-weight: 500;
+    font-family: var(--title-font);
+    transition: all 0.2s linear;
+    letter-spacing: 0.1em;
+    margin: 3px auto;
+}
+a:hover {
+    transition: all 0.2s linear;
+    color: var(--links-hover);
+}
+
+a:not(div.links a) { box-shadow: inset 0px -2px var(--links); }
+a:not(div.links a):hover { box-shadow: inset 0px -25px var(--links); }
+
+div.divider {
+    background-color: var(--borders);
+    width: 100%;
+    height: 1px;
+    margin: 1em auto;
+}
+
+p:not(:last-of-type) { margin-bottom: 1em; }
+
+ul li { list-style: circle; list-style-position: inside; margin-left: 1em; }
+ol li { list-style: decimal; list-style-position: inside; margin-left: 1em; }
+
+ul.tab-links li, ul.stats li, div.themes-tropes-tws li, ul.char-stats li, ul.char-relationships li {
+    list-style-type: none;
+    margin: 0;
+}
+
+ul.tab-links {
+    width: 320px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    background-color: var(--sidebar-background);
+    border-right: 1px solid var(--borders);
+}
+
+ul.tab-links .tab-header {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    background-color: var(--tab-background);
+    color: var(--tab-text);
+    border: none;
+    cursor: pointer;
+    font-family: var(--title-font);
+    font-size: 1.2em;
+    font-weight: 700;
+    transition: all 0.2s linear;
+    letter-spacing: 0.1em;
+}
+ul.tab-links .tab-header.active {
+    background-color: var(--active-tab);
+    color: var(--accent-text);
+    transition: all 0.2s linear;
+}
+ul.tab-links .tab-header:not(.active):hover {
+    background-color: var(--hover-tab);
+    transition: all 0.2s linear;
+}
+
+.main-title {
+    font-family: var(--title-font);
+    font-size: 1.5em;
+    font-weight: 700;
+    background-color: var(--accent);
+    color: var(--title);
+    letter-spacing: 0.1em;
+    border-radius: 15px;
+    text-align: center;
+    margin: 1em 0.5em;
+    padding: 0.5em;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-family: var(--title-font);
+    font-size: 1.2em;
+    font-weight: 600;
+    background-color: var(--subtitle);
+    color: var(--accent-text);
+    border-radius: 15px 0 15px 0;
+    padding: 0.2em 0.5em;
+    margin: 0 0.5em;
+}
+
+.wip-content {
+    margin: 1em auto;
+}
+
+/*--- TAB CONTAINER ---*/
+section#container {
+    background-color: var(--content-background);
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+}
+
+div.tab-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+/*--- TAB CONTENT LEFT SIDE ---*/
+
+article.tab-info {
+    max-height: 100vh;
+    overflow: auto;
+}
+
+div.description, ul.stats {
+    padding: 1em 1.5em;
+}
+
+div.themes-tropes-tws {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+div.themes-tropes-tws li {
+    margin-left: 1.5em;
+}
+
+div.character-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+div.character-card {
+    display: flex;
+    border: 1px solid var(--borders);
+    background-color: var(--character-card-background);
+    width: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0.7em auto;
+}
+
+div.char-right { margin-right: 1em; width: 120px; }
+
+img.profile-img {
+    flex-shrink: 0;
+    width: 120px;
+    height: 140px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--borders);
+    border-right: 1px solid var(--borders);
+    border-bottom-right-radius: 15px;
+}
+
+div.char-name {
+    font-family: var(--title-font);
+    font-weight: 700;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 0 0.5em;
+}
+div.char-name::first-letter { color: var(--accent); }
+
+div.char-subtitle {
+    color: var(--character-subtitle);
+    font-size: 0.8em;
+    text-align: center;
+    margin: 0 0.5em;
+}
+
+div.char-summary { margin-bottom: 1em; }
+
+ul.char-relationships, ul.char-stats {
+    list-style: none;
+    margin-bottom: 0.5em;
+}
+
+ul.char-relationships b {
+    margin-right: 8px;
+    color: var(--accent);
+    font-family: var(--title-font);
+    font-weight: 600;
+}
+
+.relationship-icon {
+    width: 13px;
+    height: 13px;
+    stroke-width: 2px;
+    color: var(--accent);
+    vertical-align: baseline;
+}
+ul.char-stats { margin-top: 0.5em; list-style: none; }
+ul.char-stats b {
+    font-family: var(--title-font);
+    font-weight: 600;
+    box-shadow: inset 0px 0px 0px 25px var(--accent) ;
+    color: var(--accent-text);
+    padding: 0.05em 0.1em;
+}
+
+div.links { margin-bottom: 1em; padding: 1em 1.5em; }
+
+div.links a { font-size: 1.1em; margin: 0 0.5em; }
+div.links a:not(:last-of-type)::after {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--links-hover);
+    margin-left: 1em;
+}
+
+/*--- TAB CONTENT RIGHT SIDE ---*/
+article.image-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding: 0 1em;
+    background-color: var(--sidebar-background);
+}
+
+img.cover-image {
+    flex-shrink: 0;
+    width: 400px;
+    height: 550px;
+    object-fit: cover;
+    margin-top: 150px;
+    border: none;
+    border-radius: 15px;
+}
+
+div.cover-title {
+    background-color: var(--accent-text);
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-size: 1.1em;
+    margin-top: 1em;
+    padding: 0.2em 0.5em;
+    font-family: var(--title-font);
+}
+
+</style>
+</head>
+<body class="loading">
+
+<!--- 🎀COPY-PASTE TAB HEADER!!!!!
+
+<li><button class="tab-header" onClick="openTab(event, 'tab-id')">Button Label</button>
+
+--->
+
+<ul class="tab-links">
+    <li><button class="tab-header" onClick="openTab(event, 'akuma-no-riddle')">Akuma no Riddle</button>
+    <li><button class="tab-header" onClick="openTab(event, 'name-2')">Whatever You Name It</button>
+</ul>
+
+
+<!--- 🎀COPY-PASTE TAB CONTENT !!!!!
+
+    <div id="tab-id" class="tab-content">
+
+        <article class="tab-info">
+            <h2 class="main-title">Main Title</h2>
+
+            <div class="wip-content summary">
+                <div class="subtitle">Summary</div>
+                <div class="description">
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Quidem minus nisi odit beatae. Quod quo eveniet cumque laboriosam consectetur 
+                        deserunt optio doloremque, dolor quia accusamus. 
+                        Doloribus voluptates recusandae beatae ullam.
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content stats">
+                <div class="subtitle">Stats</div>
+                <ul class="stats">
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content themes-tropes-tws">
+                <ul class="themes">
+                    <div class="subtitle">Genres</div>
+                    <li>Genre</li>
+                    <li>Genre</li>
+                    <li>Genre</li>
+                </ul>
+
+                <ul class="tropes">
+                    <div class="subtitle">Themes</div>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                </ul>
+
+                <ul class="trigger-warnings">
+                    <div class="subtitle">Trigger Warnings</div>
+                    <li>TW</li>
+                    <li>TW</li>
+                    <li>TW</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content">
+                <div class="subtitle">Characters</div>
+            </div>
+
+            <div class="wip-content character-cards-container">
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://via.placeholder.com/120" alt="Character Image" class="profile-img">
+                        <div class="char-name">Character Name</div>
+                        <div class="char-subtitle">Character Subtitle</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> XX</li>
+                            <li><b>Sex:</b> XX</li>
+                            <li><b>Birthday:</b> XX</li>
+                            <li><b>Status:</b> XX</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>                          
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Character 1</b>
+                                Girlfriend
+                            </li>
+                            <li>
+                                <i data-feather="user" class="relationship-icon"></i>
+                                <b>Character 2</b>
+                                Sister
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://via.placeholder.com/120" alt="Character Image" class="profile-img">
+                        <div class="char-name">Character Name</div>
+                        <div class="char-subtitle">Character Subtitle</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> XX</li>
+                            <li><b>Sex:</b> XX</li>
+                            <li><b>Birthday:</b> XX</li>
+                            <li><b>Status:</b> XX</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>                         
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Character 1</b>
+                                Girlfriend
+                            </li>
+                            <li>
+                                <i data-feather="user" class="relationship-icon"></i>
+                                <b>Character 2</b>
+                                Sister
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content links-container">
+                <div class="subtitle">Links</div>
+                <div class="links">
+                    <a href="">Link 1</a>
+                    <a href="">Link 2</a>
+                    <a href="">Link 3</a>
+                    <a href="">Link 4</a>
+                    <a href="">Link 5</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="image-title">
+            <img class="cover-image" src="https://via.placeholder.com/400x550" alt="Cover Image">
+            <div class="cover-title">Cover Title</div>
+        </article>
+        
+    </div>
+--->
+
+<!--- 🎀COPY-PASTE CHARACTER CARD!!!!!
+
+    <div class="character-card">
+        <div class="char-right">
+            <img src="https://via.placeholder.com/120" alt="Character Image" class="profile-img">
+            <div class="char-name">Character Name</div>
+            <div class="char-subtitle">Character Subtitle</div>
+        </div>
+        <div class="char-description">
+            <ul class="char-stats">
+                <li><b>Age:</b> XX</li>
+                <li><b>Sex:</b> XX</li>
+                <li><b>Birthday:</b> XX</li>
+                <li><b>Status:</b> XX</li>
+            </ul>
+            <div class="char-summary">
+                <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                    Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                    accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                    earum molestiae voluptatem, autem, est quidem iusto.
+                </p>                          
+            </div>
+            <ul class="char-relationships">
+                <li>
+                    <i data-feather="heart" class="relationship-icon"></i>
+                    <b>Character 1</b>
+                    Girlfriend
+                </li>
+                <li>
+                    <i data-feather="user" class="relationship-icon"></i>
+                    <b>Character 2</b>
+                    Sister
+                </li>
+            </ul>
+        </div>
+    </div>
+--->
+
+<section id="container">
+
+    <!-- TAB ONE -->
+    <div id="akuma-no-riddle" class="tab-content">
+
+        <article class="tab-info">
+            <h2 class="main-title">Akuma no Riddle</h2>
+
+            <div class="wip-content summary">
+                <div class="subtitle">Summary</div>
+                <div class="description">
+                    <p>
+                        <b>All the info is directly from the <a href="https://akuma-no-riddle.fandom.com/wiki/Akuma_no_Riddle_(series)"><i>Wiki!</i></a></b>
+                        <br><br>
+                        Tokaku Azuma has just transferred to the elite Myoujou Academy, 
+                        a private girls' boarding school. But there's a catch: 
+                        she, along with 11 of her fellow students in Class Black, 
+                        is an assassin taking part in the challenge to kill their sweet-natured classmate, 
+                        Haru Ichinose. Whoever succeeds will be granted their deepest desire, no matter the difficulty or cost. 
+                        However, each assassin only gets one chance; if they fail to kill her, they will be expelled.
+                    </p>
+                    <p>
+                        Despite the extraordinary reward, 
+                        Tokaku decides to take a different course of action. 
+                        Though Haru is her target, the young assassin soon finds herself drawn to the very girl she is supposed to kill. 
+                        With the entire class out for Haru, Tokaku refuses to let her friend die, vowing to protect her from a growing bloodlust.
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content stats">
+                <div class="subtitle">Stats</div>
+                <ul class="stats">
+                    <li><b>Type:</b> TV</li>
+                    <li><b>Episodes:</b> 12</li>
+                    <li><b>Status:</b> Finished Airing</li>
+                    <li><b>Source:</b> Manga</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content themes-tropes-tws">
+                <ul class="themes">
+                    <div class="subtitle">Themes</div>
+                    <li>Mystery</li>
+                    <li>Action</li>
+                    <li>School</li>
+                    <li>Yuri</li>
+                </ul>
+
+                <ul class="tropes">
+                    <div class="subtitle">Tropes</div>
+                    <li>Assasination</li>
+                    <li>Queen Bee</li>
+                    <li>idk</li>
+                </ul>
+
+                <ul class="trigger-warnings">
+                    <div class="subtitle">Trigger Warnings</div>
+                    <li>Violence</li>
+                    <li>Profanity</li>
+                    <li>Mentions of Abuse</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content">
+                <div class="subtitle">Characters</div>
+            </div>
+
+            <div class="wip-content character-cards-container">
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://i.pinimg.com/564x/10/be/ae/10beaec7d92fe4a3700cf29fb5846f46.jpg" alt="Character Image" class="profile-img">
+                        <div class="char-name">Ichinose Haru</div>
+                        <div class="char-subtitle">Main Character</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> 15</li>
+                            <li><b>Sex:</b> F</li>
+                            <li><b>Birthday:</b> January 1st</li>
+                            <li><b>Status:</b> Student/Target</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                Haru is shown to be a bright and cheerful girl. 
+                                As claimed by Tokaku Azuma initially, 
+                                she is naive and trusting of others even in the face of danger. 
+                            </p>
+                            <p>
+                                Haru is suspected of having the "Primer" ability, 
+                                making her a Queen Bee. 
+                                It is never explicitly established if she has this ability.
+                            </p>
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Azuma Tokaku</b>
+                                Girlfriend
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://i.pinimg.com/564x/cb/6e/10/cb6e10220dcadbeda7436797aa5303d2.jpg" alt="Character Image" class="profile-img">
+                        <div class="char-name">Azuma Tokaku</div>
+                        <div class="char-subtitle">Main Character</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> 15</li>
+                            <li><b>Sex:</b> F</li>
+                            <li><b>Birthday:</b> February 24th</li>
+                            <li><b>Status:</b> Student/Assasin</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                She is a distant and cold girl, 
+                                who dislikes when people comes too close to her and she especially hates it when people call her by her first name, 
+                                with the exception of Haru.
+                            </p>
+                            <p>
+                                She is skilled with using knives, 
+                                whether it's throwing or fighting with them. 
+                                She also has exceptionally quick reflexes, agility and speed.
+                            </p>                            
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Ichinose Haru</b>
+                                Girlfriend
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content links-container">
+                <div class="subtitle">Links</div>
+                <div class="links">
+                    <a href="https://myanimelist.net/anime/19429/Akuma_no_Riddle">My Anime List</a>
+                    <a href="https://akuma-no-riddle.fandom.com/wiki/Akuma_no_Riddle_(series)">Wiki</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="image-title">
+            <img class="cover-image" src="https://i.pinimg.com/564x/a8/98/b8/a898b8aadd12d7de195fbad706bb11fb.jpg" alt="Cover Image">
+            <div class="cover-title">Akuma no Riddle</div>
+        </article>
+        
+    </div>
+
+    <!-- TAB TWO -->
+    <div id="name-2" class="tab-content">
+
+        <article class="tab-info">
+            <h2 class="main-title">Main Title</h2>
+
+            <div class="wip-content summary">
+                <div class="subtitle">Summary</div>
+                <div class="description">
+                    <p>
+                        Here is a paragraph example. This paragraph contains so much info. It 
+                        is not pre-structured, you have to use <code>&lt;br&gt;</code> to get to a new line. 
+                        You can also have <b>bold text</b>, <i>italic text</i>, <b><i>or both</i></b>.
+                        <br><br>
+                        Here is a <a href="">link</a>.
+                    </p>
+                    <p>
+                        You can also have multiple paragraphs, writing your text 
+                        between <code>&lt;p&gt;</code> and <code>&lt;/p&gt;</code>.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+                        Itaque repudiandae a animi id odit fugit quasi excepturi 
+                        iusto saepe autem hic fuga amet eveniet, 
+                        explicabo rerum repellendus accusamus asperiores nobis.
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                        Ea beatae saepe iusto alias magni aliquam amet laborum aspernatur expedita 
+                        distinctio quidem voluptate cumque aliquid perspiciatis, 
+                        voluptas iure error at excepturi?
+
+                        <ul>
+                            <b>Unordered</b>
+                            <li>list</li>
+                            <li>list</li>
+                            <li>list</li>
+                        </ul>
+
+                        <ol>
+                            <b>Ordered</b>
+                            <li>list</li>
+                            <li>list</li>
+                            <li>list</li>
+                        </ol>
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content stats">
+                <div class="subtitle">Stats</div>
+                <ul class="stats">
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                    <li><b>Stat:</b> stat</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content themes-tropes-tws">
+                <ul class="themes">
+                    <div class="subtitle">Genres</div>
+                    <li>Genre</li>
+                    <li>Genre</li>
+                    <li>Genre</li>
+                </ul>
+
+                <ul class="tropes">
+                    <div class="subtitle">Themes</div>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                    <li>Theme</li>
+                </ul>
+
+                <ul class="trigger-warnings">
+                    <div class="subtitle">Trigger Warnings</div>
+                    <li>TW</li>
+                    <li>TW</li>
+                    <li>TW</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content">
+                <div class="subtitle">Characters</div>
+            </div>
+
+            <div class="wip-content character-cards-container">
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://via.placeholder.com/120" alt="Character Image" class="profile-img">
+                        <div class="char-name">Character Name</div>
+                        <div class="char-subtitle">Character Subtitle</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> XX</li>
+                            <li><b>Sex:</b> XX</li>
+                            <li><b>Birthday:</b> XX</li>
+                            <li><b>Status:</b> XX</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>                            
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Character 1</b>
+                                Girlfriend
+                            </li>
+                            <li>
+                                <i data-feather="user" class="relationship-icon"></i>
+                                <b>Character 2</b>
+                                Sister
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="character-card">
+                    <div class="char-right">
+                        <img src="https://via.placeholder.com/120" alt="Character Image" class="profile-img">
+                        <div class="char-name">Character Name</div>
+                        <div class="char-subtitle">Character Subtitle</div>
+                    </div>
+                    <div class="char-description">
+                        <ul class="char-stats">
+                            <li><b>Age:</b> XX</li>
+                            <li><b>Sex:</b> XX</li>
+                            <li><b>Birthday:</b> XX</li>
+                            <li><b>Status:</b> XX</li>
+                        </ul>
+                        <div class="char-summary">
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>
+                            <p>
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                                Quia consequatur eaque quisquam consequuntur saepe voluptate 
+                                accusamus neque assumenda sapiente nobis laborum nihil temporibus 
+                                earum molestiae voluptatem, autem, est quidem iusto.
+                            </p>                            
+                        </div>
+                        <ul class="char-relationships">
+                            <li>
+                                <i data-feather="heart" class="relationship-icon"></i>
+                                <b>Character 1</b>
+                                Girlfriend
+                            </li>
+                            <li>
+                                <i data-feather="user" class="relationship-icon"></i>
+                                <b>Character 2</b>
+                                Sister
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="wip-content links-container">
+                <div class="subtitle">Links</div>
+                <div class="links">
+                    <a href="">Link 1</a>
+                    <a href="">Link 2</a>
+                    <a href="">Link 3</a>
+                    <a href="">Link 4</a>
+                    <a href="">Link 5</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="image-title">
+            <img class="cover-image" src="https://via.placeholder.com/400x550" alt="Cover Image">
+            <div class="cover-title">Cover Title</div>
+        </article>
+        
+    </div>
+
+</section>
+
+<script>
+    feather.replace();
+
+    $(document).ready(function() {
+        $('body').removeClass('loading');
+        $('.tab-content').addClass('inactive');
+        $('.tab-content.inactive').hide();
+        
+        $('#container .tab-content:first').removeClass('inactive');
+        $('#container .tab-content:first').addClass('active');
+        $('.tab-header:first').addClass('active');
+        
+        $('.tab-content.active').fadeIn();
+    })
+    
+    function openTab(e, tabName) {
+        e.preventDefault();
+        $('.tab-header').removeClass('active');
+        e.currentTarget.className += ' active';
+        
+        $('.tab-content').removeClass('active');
+        $('.tab-content').addClass('inactive');
+        $('.tab-content').hide();
+        
+        
+        $('#' + tabName).removeClass('inactive');
+        $('#' + tabName).addClass('active');
+        
+        $('.tab-content.active').fadeIn();
+    }
+</script>
+</body>
+</html>
