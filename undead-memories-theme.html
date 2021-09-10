@@ -18,7 +18,7 @@
             - base code by @seyche
             - feather icons by @colebemis
             - tippy.js tooltips by @atomiks
-            - npf photoset fix v3 by @glenthemes
+            - npf photoset fix v2 by @glenthemes
 	--->
 
 <!----- FONTS ----->
@@ -77,19 +77,17 @@
 
 <!----- SCRIPTS & LINKS ----->
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away-subtle.css" />
+
 <script src="https://unpkg.com/feather-icons"></script>
 <script src="https://unpkg.com/feather-icons@4.28.0/dist/feather-sprite.svg"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script src="https://static.tumblr.com/0podkko/qWqq8va08/photosets.js"></script>
-<script src="//npf-images-v3.github.io/script.js"></script>
-<link rel="stylesheet" href="//npf-images-v3.github.io/recon.css">
-<style tmblr-npf>
-:root {
-    --NPF-Caption-Spacing:1em;
-    --NPF-Image-Spacing:4px;
-}
-</style>
-<link href="https://static.tumblr.com/qudkd6d/OcDnl99gb/style.css" rel="stylesheet" type="text/css"/>
+
+<link href="//dl.dropbox.com/s/bnoj86mka0bkplb/npf-override.css" rel="stylesheet">
+<script src="//dl.dropbox.com/s/vwrm94pcg4c9e71/npf-evenize.js"></script>
+
 <script src="https://static.tumblr.com/yxfeliq/hHwojmt8m/bctphotoset.min.js"></script>
 
 <!----- VARIABLES AND OPTIONS ----->
@@ -223,6 +221,11 @@
 		
 <!----- CSS ----->
 <style type="text/css">
+
+:root {
+    --NPF-Image-Spacing:4px;
+    --NPF-Bottom-Gap-From-Captions:1em;
+}
 
 ::-webkit-scrollbar {
     width: 13px;
@@ -1200,7 +1203,7 @@ a.more_notes_link:hover {
         {/block:DayPage}
         <!----- POSTS ----->
         {block:Posts}
-        <article class="posts" id="{PostID}">
+        <article class="posts" id="{PostID}" post-type="{PostType}">
             {block:Text}
             {block:Title}
             <h1 class="post-title"><a href="{Permalink}">{Title}</a></h1>
@@ -1519,6 +1522,8 @@ a.more_notes_link:hover {
 
 
 <script>
+    feather.replace();
+
     $(document).ready(function(){
     //remove tumblr redirects script by magnusthemes@tumblr 
         $('a[href*="t.umblr.com/redirect"]').each(function(){
@@ -1568,8 +1573,6 @@ a.more_notes_link:hover {
                 $(this).text(n + 'k notes');
             }
         });
-    
-        feather.replace();
         
         $(function () {
             $(window).scroll(function () {
